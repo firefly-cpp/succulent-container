@@ -1,0 +1,8 @@
+services:
+  succulent:
+    container_name: succulent
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
