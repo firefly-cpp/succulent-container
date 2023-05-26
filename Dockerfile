@@ -1,36 +1,15 @@
-# based on https://github.com/firefly-cpp/alpine-container-data-science
-FROM alpine:3.18
+FROM python:3.9-slim
 
-ENV NAME=data-science-basic VERSION=0 ARCH=x86_64
+WORKDIR /app
 
-LABEL org.label-schema="$NAME" \
-     name="$FGC/$NAME" \
-     version="$VERSION" \
-     architecture="$ARCH" \
-     run="podman run -it IMAGE" \
-     url="https://github.com/firefly-cpp/succulent-container" \
-     summary="A basic container image for running succulent framework." \
-     description="A basic container image for running succulent framework."
+COPY requirements.txt .
 
-# set a workdir where we will also collect the results of python scripts
-WORKDIR /var/ds/
+# Install dependencies
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-# INSTALL succulent framework
-ENV PACKAGES="\
-    py3-succulent \
-"
-
-RUN echo 'https://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
-    && apk update \
-    && apk upgrade && apk add --no-cache \
-    python3 \
-    python3-dev \
-    $PACKAGES \
-    && rm -rf /var/cache/apk/*
-
-# copy our Python script and configuration file in yaml
 COPY run.py .
-# start optimization
-RUN python3 run.py
+COPY configuration.yml .
 
-CMD ["/bin/sh"]
+EXPOSE 8080
+
+CMD ["python", "run.py"]
