@@ -27,3 +27,7 @@ Alternatively, you can use `docker-compose`:
 ```bash
 docker compose up
 ```
+
+## Disclaimer
+
+This framework is provided as-is, and there are no guarantees that it fits your purposes or that it is bug-free. Use it at your own risk!
